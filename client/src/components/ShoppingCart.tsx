@@ -3,9 +3,10 @@ import CartItems from "./CartItems";
 
 interface ShoppingCartProps {
   cartItems: CartItem[];
+  onCheckout: () => void;
 }
 
-const ShoppingCart = ({ cartItems }: ShoppingCartProps) => {
+const ShoppingCart = ({ cartItems, onCheckout }: ShoppingCartProps) => {
   return (
     <header>
       <h1>The Shop!</h1>
@@ -19,9 +20,15 @@ const ShoppingCart = ({ cartItems }: ShoppingCartProps) => {
         ) : (
           <CartItems cartItems={cartItems} />
         )}
-        <button className="checkout" disabled={cartItems.length === 0}>
-          Checkout
-        </button>
+        <div className="checkout-button">
+          <button
+            className="checkout"
+            disabled={cartItems.length === 0}
+            onClick={onCheckout}
+          >
+            Checkout
+          </button>
+        </div>
       </div>
     </header>
   );

@@ -52,3 +52,8 @@ export const deleteProduct = async (productId: string) => {
   await axios.delete(`/api/products/${productId}`);
   return null;
 };
+
+export const checkout = async () => {
+  await axios.post("/api/checkout");
+  return null;
+};

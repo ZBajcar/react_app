@@ -9,6 +9,7 @@ import {
   addProduct,
   updateProduct,
   deleteProduct,
+  checkout,
 } from "./services/products";
 
 function App() {
@@ -81,9 +82,18 @@ function App() {
     }
   };
 
+  const handleCheckout = async () => {
+    try {
+      await checkout();
+      setCartItems([]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div id="app">
-      <ShoppingCart cartItems={cartItems} />
+      <ShoppingCart cartItems={cartItems} onCheckout={handleCheckout} />
 
       <main>
         <ProductListing
