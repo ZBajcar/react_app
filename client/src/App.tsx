@@ -95,7 +95,7 @@ function App() {
           onUpdateProduct={handleUpdateProduct}
           onDeleteProduct={handleDeleteProduct}
         />
-        <ToggleableAddProductForm />
+        <ToggleableAddProductForm onAddProduct={handleAddProduct} />
       </main>
     </div>
   );
