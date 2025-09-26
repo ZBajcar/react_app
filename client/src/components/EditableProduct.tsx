@@ -1,5 +1,5 @@
 import React from "react";
-import EditProductForm from "./EditProductForm.tsx";
+import EditProductForm from "./EditProductForm";
 import type { BaseProduct, Product } from "../types";
 
 interface EditableProductProps {

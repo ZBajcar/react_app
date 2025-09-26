@@ -1,19 +1,15 @@
 import React from "react";
-import ProductListing from "./components/ProductListing.tsx";
-import ShoppingCart from "./components/ShoppingCart.tsx";
-import ToggleableAddProductForm from "./components/ToggleableAddProductForm.tsx";
-import {
-  type Product,
-  type CartItem,
-  type BaseProduct,
-} from "./types/index.ts";
+import ProductListing from "./components/ProductListing";
+import ShoppingCart from "./components/ShoppingCart";
+import ToggleableAddProductForm from "./components/ToggleableAddProductForm";
+import { type Product, type CartItem, type BaseProduct } from "./types";
 import {
   getCartItems,
   getProducts,
   addProduct,
   updateProduct,
   deleteProduct,
-} from "./services/products.ts";
+} from "./services/products";
 
 function App() {
   const [products, setProducts] = React.useState<Product[]>([]);
@@ -87,7 +83,7 @@ function App() {
 
   return (
     <div id="app">
-      <ShoppingCart />
+      <ShoppingCart cartItems={cartItems} />
 
       <main>
         <ProductListing

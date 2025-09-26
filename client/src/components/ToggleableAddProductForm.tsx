@@ -1,5 +1,5 @@
 import React from "react";
-import type { BaseProduct } from "../types/index.ts";
+import type { BaseProduct } from "../types";
 
 interface ToggleableAddProductForm {
   onAddProduct: (product: BaseProduct, onToggleForm: () => void) => void;
