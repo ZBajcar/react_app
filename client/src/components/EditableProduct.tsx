@@ -10,12 +10,14 @@ interface EditableProductProps {
     onToggleEdit: () => void
   ) => void;
   onDeleteProduct: (productId: string) => void;
+  onAddToCart: (productId: string) => void;
 }
 
 const EditableProduct = ({
   product,
   onUpdateProduct,
   onDeleteProduct,
+  onAddToCart,
 }: EditableProductProps) => {
   const [isEditing, setIsEditing] = React.useState(false);
 
@@ -31,7 +33,11 @@ const EditableProduct = ({
           <p className="price">${product.price}</p>
           <p className="quantity">{product.quantity} left in stock</p>
           <div className="actions product-actions">
-            <button className="add-to-cart" disabled={product.quantity === 0}>
+            <button
+              className="add-to-cart"
+              disabled={product.quantity === 0}
+              onClick={() => onAddToCart(product._id)}
+            >
               Add to Cart
             </button>
             <button className="edit" onClick={handleToggleEdit}>

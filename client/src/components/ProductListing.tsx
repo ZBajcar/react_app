@@ -9,12 +9,14 @@ interface ProductListingProps {
     onToggleEdit: () => void
   ) => void;
   onDeleteProduct: (productId: string) => void;
+  onAddToCart: (productId: string) => void;
 }
 
 const ProductListing = ({
   products,
   onUpdateProduct,
   onDeleteProduct,
+  onAddToCart,
 }: ProductListingProps) => {
   return (
     <div className="product-listing">
@@ -26,6 +28,7 @@ const ProductListing = ({
             product={product}
             onUpdateProduct={onUpdateProduct}
             onDeleteProduct={onDeleteProduct}
+            onAddToCart={onAddToCart}
           />
         ))}
       </ul>

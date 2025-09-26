@@ -10,6 +10,7 @@ import {
   updateProduct,
   deleteProduct,
   checkout,
+  addToCart,
 } from "./services/products";
 
 function App() {
@@ -91,6 +92,41 @@ function App() {
     }
   };
 
+  const handleAddToCart = async (productId: string) => {
+    const product = products.find((product) => product._id === productId);
+    const existingItem = cartItems.find(
+      (cartItem) => cartItem.productId === productId
+    );
+    if (!product || product.quantity === 0) return;
+    try {
+      const { product: updatedProduct, item } = await addToCart(productId);
+      setProducts((prev) => {
+        return prev.map((product) => {
+          if (product._id === updatedProduct._id) {
+            return updatedProduct;
+          } else {
+            return product;
+          }
+        });
+      });
+      setCartItems((prev) => {
+        if (existingItem) {
+          return prev.map((cartItem) => {
+            if (cartItem.productId === productId) {
+              return item;
+            } else {
+              return cartItem;
+            }
+          });
+        } else {
+          return prev.concat(item);
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div id="app">
       <ShoppingCart cartItems={cartItems} onCheckout={handleCheckout} />
@@ -100,6 +136,7 @@ function App() {
           products={products}
           onUpdateProduct={handleUpdateProduct}
           onDeleteProduct={handleDeleteProduct}
+          onAddToCart={handleAddToCart}
         />
         <ToggleableAddProductForm onAddProduct={handleAddProduct} />
       </main>

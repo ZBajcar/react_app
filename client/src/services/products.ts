@@ -23,6 +23,11 @@ const cartItemSchema = z.object({
   __v: z.number().optional(),
 });
 
+const addToCartResponseSchema = z.object({
+  product: productSchema,
+  item: cartItemSchema,
+});
+
 export const getProducts = async () => {
   const { data } = await axios.get("/api/products");
   return z.array(productSchema).parse(data);
@@ -56,4 +61,9 @@ export const deleteProduct = async (productId: string) => {
 export const checkout = async () => {
   await axios.post("/api/checkout");
   return null;
+};
+
+export const addToCart = async (productId: string) => {
+  const { data } = await axios.post("/api/add-to-cart", { productId });
+  return addToCartResponseSchema.parse(data);
 };
