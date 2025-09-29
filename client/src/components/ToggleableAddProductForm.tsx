@@ -31,12 +31,7 @@ const ToggleableAddProductForm = ({
 
   return (
     <>
-      <p>
-        <button className="add-product-button" onClick={handleToggleForm}>
-          Add A Product
-        </button>
-      </p>
-      {isVisible && (
+      {isVisible ? (
         <div className="add-form">
           <form onSubmit={handleSubmit}>
             <div className="input-group">
@@ -92,6 +87,12 @@ const ToggleableAddProductForm = ({
             </div>
           </form>
         </div>
+      ) : (
+        <p>
+          <button className="add-product-button" onClick={handleToggleForm}>
+            Add A Product
+          </button>
+        </p>
       )}
     </>
   );
