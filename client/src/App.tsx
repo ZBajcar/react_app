@@ -2,7 +2,7 @@ import React from "react";
 import ProductListing from "./components/ProductListing";
 import ShoppingCart from "./components/ShoppingCart";
 import ToggleableAddProductForm from "./components/ToggleableAddProductForm";
-import { type Product, type CartItem, type BaseProduct } from "./types";
+import type { BaseProduct } from "./types";
 import {
   getCartItems,
   getProducts,
@@ -12,10 +12,38 @@ import {
   checkout,
   addToCart,
 } from "./services/products";
+import {
+  productReducer,
+  fetchProductsAction,
+  addProductAction,
+  updateProductAction,
+  deleteProductAction,
+} from "./reducers/productReducer";
+import {
+  cartReducer,
+  fetchCartAction,
+  addToCartAction,
+  clearCartAction,
+} from "./reducers/cartReducer";
+import {
+  SortKey,
+  SortDirection,
+  sortProductsAction,
+} from "./reducers/productReducer";
 
 function App() {
-  const [products, setProducts] = React.useState<Product[]>([]);
-  const [cartItems, setCartItems] = React.useState<CartItem[]>([]);
+  const [productState, dispatchProducts] = React.useReducer(productReducer, {
+    items: [],
+    sort: {
+      key: "title",
+      direction: "asc",
+    },
+  });
+  const [cartItems, dispatchCartItems] = React.useReducer(cartReducer, []);
+
+  const handleSort = (key: SortKey, direction: SortDirection) => {
+    dispatchProducts(sortProductsAction(key, direction));
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -23,8 +51,8 @@ function App() {
         getProducts(),
         getCartItems(),
       ]);
-      setProducts(productsData);
-      setCartItems(cartItemsData);
+      dispatchProducts(fetchProductsAction(productsData));
+      dispatchCartItems(fetchCartAction(cartItemsData));
     };
     try {
       fetchData();
@@ -39,7 +67,7 @@ function App() {
   ) => {
     try {
       const data = await addProduct(newProduct);
-      setProducts((prevState) => prevState.concat(data));
+      dispatchProducts(addProductAction(data));
       if (callback) {
         callback();
       }
@@ -55,15 +83,7 @@ function App() {
   ) => {
     try {
       const data = await updateProduct(updatedProduct, productId);
-      setProducts((prevState) => {
-        return prevState.map((product) => {
-          if (product._id === data._id) {
-            return data;
-          } else {
-            return product;
-          }
-        });
-      });
+      dispatchProducts(updateProductAction(data));
       if (callback) {
         callback();
       }
@@ -75,9 +95,7 @@ function App() {
   const handleDeleteProduct = async (productId: string) => {
     try {
       await deleteProduct(productId);
-      setProducts((prevState) =>
-        prevState.filter((product) => product._id !== productId)
-      );
+      dispatchProducts(deleteProductAction(productId));
     } catch (e) {
       console.error(e);
     }
@@ -86,42 +104,21 @@ function App() {
   const handleCheckout = async () => {
     try {
       await checkout();
-      setCartItems([]);
+      dispatchCartItems(clearCartAction());
     } catch (e) {
       console.log(e);
     }
   };
 
   const handleAddToCart = async (productId: string) => {
-    const product = products.find((product) => product._id === productId);
-    const existingItem = cartItems.find(
-      (cartItem) => cartItem.productId === productId
+    const product = productState.items.find(
+      (product) => product._id === productId
     );
     if (!product || product.quantity === 0) return;
     try {
       const { product: updatedProduct, item } = await addToCart(productId);
-      setProducts((prev) => {
-        return prev.map((product) => {
-          if (product._id === updatedProduct._id) {
-            return updatedProduct;
-          } else {
-            return product;
-          }
-        });
-      });
-      setCartItems((prev) => {
-        if (existingItem) {
-          return prev.map((cartItem) => {
-            if (cartItem.productId === productId) {
-              return item;
-            } else {
-              return cartItem;
-            }
-          });
-        } else {
-          return prev.concat(item);
-        }
-      });
+      dispatchProducts(updateProductAction(updatedProduct));
+      dispatchCartItems(addToCartAction(item));
     } catch (e) {
       console.log(e);
     }
@@ -133,10 +130,12 @@ function App() {
 
       <main>
         <ProductListing
-          products={products}
+          products={productState.items}
           onUpdateProduct={handleUpdateProduct}
           onDeleteProduct={handleDeleteProduct}
           onAddToCart={handleAddToCart}
+          onSort={handleSort}
+          currentSort={productState.sort}
         />
         <ToggleableAddProductForm onAddProduct={handleAddProduct} />
       </main>
