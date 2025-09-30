@@ -1,5 +1,7 @@
 import type { BaseProduct, Product } from "../types";
 import EditableProduct from "./EditableProduct";
+import ProductSort from "./ProductSort";
+import type { SortKey, SortDirection } from "../reducers/productReducer";
 
 interface ProductListingProps {
   products: Product[];
@@ -10,6 +12,11 @@ interface ProductListingProps {
   ) => void;
   onDeleteProduct: (productId: string) => void;
   onAddToCart: (productId: string) => void;
+  onSort: (key: SortKey, direction: SortDirection) => void;
+  currentSort: {
+    key: SortKey;
+    direction: SortDirection;
+  };
 }
 
 const ProductListing = ({
@@ -17,10 +24,15 @@ const ProductListing = ({
   onUpdateProduct,
   onDeleteProduct,
   onAddToCart,
+  onSort,
+  currentSort,
 }: ProductListingProps) => {
   return (
     <div className="product-listing">
-      <h2>Products</h2>
+      <div className="product-listing-header">
+        <h2>Products</h2>
+        <ProductSort onSort={onSort} currentSort={currentSort} />
+      </div>
       <ul className="product-list">
         {products.map((product) => (
           <EditableProduct
