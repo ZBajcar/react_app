@@ -176,6 +176,15 @@ input[type="number"] {
   display: block;
 }
 
+/* .actions {
+  margin-top: 20px;
+}
+
+h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+} */
+
 /* .add-form h3,
 .add-form form {
   display: none;
@@ -189,14 +198,170 @@ input[type="number"] {
 .add-form.visible form {
   display: block;
 } */
+/* New CSS for sorting */
 
-table td,
-th {
-  text-align: center;
-  padding: 0 10px;
+.product-listing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-table td.total {
-  text-align: right;
-  padding-top: 20px;
+.sort-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sort-button {
+  background: transparent;
+  color: #07575b;
+  border: 1px solid #07575b;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.sort-button:hover {
+  background: #07575b;
+  color: white;
+}
+
+.sort-button.active {
+  background: #07575b;
+  color: white;
+}
+
+/* Styles for Theme Context */
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.header-controls {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Theme Specific Styles */
+
+.light {
+  --bg-body: #fff;
+  --bg-primary: #c4dfe6;
+  --bg-header: #07575b;
+  --text-primary: #000;
+  --text-header: #fff;
+  --card-bg: #fff;
+  --button-bg: #07575b;
+  --button-text: #fff;
+}
+
+.dark {
+  --bg-body: #121920;
+  --bg-primary: #1e2a3a;
+  --bg-header: #2c4356;
+  --text-primary: #e1e7ec;
+  --text-header: #fff;
+  --card-bg: #2c3e50;
+  --button-bg: #3498db;
+  --button-text: #fff;
+  --price-color: #ff9eb1;
+}
+
+body {
+  background-color: var(--bg-body);
+  margin: 0;
+  min-height: 100vh;
+}
+
+#app {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+header {
+  background: var(--bg-header);
+  color: var(--text-header);
+}
+
+main {
+  background: var(--bg-primary);
+}
+
+.product {
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.product .price {
+  color: var(--price-color);
+}
+
+button {
+  background: var(--button-bg);
+  color: var(--button-text);
+}
+
+.sort-button {
+  border-color: var(--button-bg);
+  color: var(--button-bg);
+}
+
+.sort-button:hover,
+.sort-button.active {
+  background: var(--button-bg);
+  color: var(--button-text);
+}
+
+/* Currency Styles */
+
+.currency-toggle {
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.currency-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.header-left {
+  display: flex;
+  gap: 40px;
+}
+
+.header-controls {
+  align-items: center;
+  gap: 8px;
 }

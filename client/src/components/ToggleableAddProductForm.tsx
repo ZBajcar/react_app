@@ -1,5 +1,6 @@
 import React from "react";
 import type { BaseProduct } from "../types";
+import useToggle from "../hooks/useToggle";
 
 interface ToggleableAddProductForm {
   onAddProduct: (product: BaseProduct, onToggleForm: () => void) => void;
@@ -8,7 +9,7 @@ interface ToggleableAddProductForm {
 const ToggleableAddProductForm = ({
   onAddProduct,
 }: ToggleableAddProductForm) => {
-  const [isVisible, setIsvisible] = React.useState(false);
+  const [isVisible, toggle] = useToggle(false);
   const [formData, setFormData] = React.useState({
     title: "",
     price: NaN,
@@ -16,7 +17,7 @@ const ToggleableAddProductForm = ({
   });
 
   const handleToggleForm = () => {
-    setIsvisible(!isVisible);
+    toggle();
     setFormData({
       title: "",
       price: NaN,

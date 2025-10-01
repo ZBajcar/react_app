@@ -1,6 +1,9 @@
 import React from "react";
 import EditProductForm from "./EditProductForm";
 import type { BaseProduct, Product } from "../types";
+import { CurrencyContext } from "../context/CurrencyContext";
+import { formatPrice } from "../helpers/helpers";
+import useToggle from "../hooks/useToggle";
 
 interface EditableProductProps {
   product: Product;
@@ -19,18 +22,15 @@ const EditableProduct = ({
   onDeleteProduct,
   onAddToCart,
 }: EditableProductProps) => {
-  const [isEditing, setIsEditing] = React.useState(false);
-
-  const handleToggleEdit = () => {
-    setIsEditing(!isEditing);
-  };
+  const [isEditing, toggle] = useToggle(false);
+  const { currency, rates } = React.useContext(CurrencyContext);
 
   return (
     <>
       <li className="product">
         <div className="product-details">
           <h3>{product.title}</h3>
-          <p className="price">${product.price}</p>
+          <p className="price">{formatPrice(product.price, currency, rates)}</p>
           <p className="quantity">{product.quantity} left in stock</p>
           <div className="actions product-actions">
             <button
@@ -40,7 +40,7 @@ const EditableProduct = ({
             >
               Add to Cart
             </button>
-            <button className="edit" onClick={handleToggleEdit}>
+            <button className="edit" onClick={toggle}>
               Edit
             </button>
           </div>
@@ -54,7 +54,7 @@ const EditableProduct = ({
         {isEditing && (
           <EditProductForm
             product={product}
-            onToggleEdit={handleToggleEdit}
+            onToggleEdit={toggle}
             onUpdateProduct={onUpdateProduct}
           />
         )}
